@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      target: app
     env_file:
       - dev.env
     restart: always
