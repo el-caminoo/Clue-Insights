@@ -1,20 +1,25 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11
+# Use a lightweight official Python image
+FROM python:3.14-rc-alpine3.21
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose the port that Flask runs on
-EXPOSE 5000
-
-# Define environment variable to avoid buffering logs
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Command to run the application
-CMD ["python", "app.py"]
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copy the rest of your app
+COPY . .
+
+# Expose the port Gunicorn will run on
+EXPOSE 8000
+
+COPY start.sh /start.sh
+
+RUN chmod +x /start.sh
+
+ENTRYPOINT ["/start.sh"]

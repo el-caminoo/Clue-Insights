@@ -1,9 +1,3 @@
-erd relationships
-API logic
-dto in flask\
-
-install flask bcrypt
-
 Problem 1: Optimized Subscription Management API
 
 Objective: Create a RESTful API using Python (Flask) backed by SQL (SQLite or MySQL/MariaDB) for managing user subscriptions. Your focus should be on optimizing SQL queries for efficiency and scalability.
@@ -47,3 +41,5 @@ Provide your submission via a GitHub repository.
 Include setup instructions (Docker or virtual environment).
 
 Include a short document explaining your optimization choices.
+
+

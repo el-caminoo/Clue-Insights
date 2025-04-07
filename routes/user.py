@@ -1,42 +1,52 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from flask_jwt_extended import jwt_required
-from utils import ApiResponse
+from utils import create_api_response
 from schemas import ResponseSchema, CreateUserSchema, AuthenticateUserSchema
 from services import UserService
 
-user_routes = Blueprint("User", "user", url_prefix="/user", description="Operation to create and authenticate users")
+user_routes = Blueprint(
+    "User",
+    "user",
+    url_prefix="/user",
+    description="User related operations",
+)
 
 @user_routes.route("/create")
 class CreateUser(MethodView):
     @user_routes.arguments(CreateUserSchema)
     @user_routes.response(201, ResponseSchema)
-    def post(self, data):
-        """Creates a new User"""
-        email = data.get("email")
-        password = data.get("password")
-        role = data.get("role")
+    def post(self, data: dict) -> dict:
+        """Creates a new user."""
+        email, password, role = data["email"], data["password"], data["role"]
 
         response_data, status = UserService.register_user(email, password, role)
-        response = ApiResponse(response_data["message"], None, status, None if response_data["success"] else "Registration failed")
-        return response.to_dict(), status
 
+        return (
+            create_api_response(
+                response_data["message"],
+                response_data["data"] if response_data["success"] else None,
+                status,
+                None if response_data["success"] else "Registration failed",
+            ),
+            status,
+        )
 
 @user_routes.route("/login")
 class AuthenticateUser(MethodView):
     @user_routes.arguments(AuthenticateUserSchema)
     @user_routes.response(200, ResponseSchema)
-    def post(self, data):
-        """Authenticates an existing user to the platform"""
-
-        email = data.get("email")
-        password = data.get("password")
+    def post(self, data: dict) -> dict:
+        """Authenticates a user."""
+        email, password = data["email"], data["password"]
 
         response_data, status = UserService.authenticate_user(email, password)
-        response = ApiResponse(
-            response_data["message"],
-            {"access_token": response_data["access_token"]} if response_data["success"] else None,
+
+        return (
+            create_api_response(
+                response_data["message"],
+                response_data["data"] if response_data["success"] else None,
+                status,
+                None if response_data["success"] else "Login failed",
+            ),
             status,
-            None if response_data["success"] else "Login failed",
         )
-        return response.to_dict(), status

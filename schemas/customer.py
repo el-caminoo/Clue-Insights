@@ -1,4 +1,7 @@
 from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from models import Customer
+from .subscription import SubscriptionSchema
 
 
 class CreateCustomerSchema(Schema):
@@ -17,3 +20,19 @@ class AuthenticateCustomerSchema(Schema):
 
     email = fields.String(required=True, description="email of the customer")
     password = fields.String(required=True, load_only=True, description="Password for authentication")
+
+
+class CustomerSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+        load_instance = True
+        exclude = ("id", "password_hash", "currency_code", "created_at", "deleted_at")
+
+
+class CustomerSubscriptionSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+        load_instance = True
+        exclude = ("id", "password_hash", "currency_code", "created_at", "deleted_at")
+    
+    subscriptions = fields.List(fields.Nested(SubscriptionSchema, exclude=("customer",)))

@@ -1,25 +1,28 @@
 from config.database import db
-from sqlalchemy import text
+from datetime import datetime, timezone
+from models import User
 
 class UserRepository:
-    @staticmethod
-    def create_user(email, password_hash, role):
-        """Insert a new user into the database"""
-        sql = text("INSERT INTO users (email, password_hash, role) VALUES (:email, :password_hash, :role)")
-        db.session.execute(
-            sql, {"email": email, "password_hash": password_hash, "role": role}
-        )
-        db.session.commit()
 
-    @staticmethod
-    def get_user_by_email(email):
-        """Fetch a user by email."""
-        sql = text("SELECT * FROM users WHERE email = :email")
-        return db.session.execute(sql, {"email": email}).fetchone()
+  @staticmethod
+  def _get_utc_now():
+    return datetime.now(timezone.utc)
 
-    # @staticmethod
-    # def delete_user(username):
-    #     """Delete a user by username using raw SQL."""
-    #     sql = "DELETE FROM users WHERE username = :username"
-    #     db.session.execute(sql, {"username": username})
-    #     db.session.commit()
+  @staticmethod
+  def create_user(email, password_hash, role):
+    """Insert a new user into the database"""
+    user = User(
+        email=email,
+        password_hash=password_hash,
+        role=role,
+        created_at=UserRepository._get_utc_now()
+    )
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+  @staticmethod
+  def get_user_by_email(email):
+    """Fetch a user by email."""
+    return db.session.query(User).filter_by(email=email).first()
+

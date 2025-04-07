@@ -1,42 +1,79 @@
-# Hi, I'm [Your Name] 👋  
-🚀 **Java Backend Engineer | 4+ Years in Fintech | Vert.x Enthusiast**  
+# Clue Insights Backend Technical Assessment 
 
-![Profile Banner](https://your-image-url.com) <!-- (Optional: Add a banner image) -->
+## Introduction
 
-## 🚀 About Me  
-- 💻 Experienced in building high-performance, scalable backend systems.  
-- ⚡ Passionate about distributed systems, microservices, and event-driven architectures.  
-- 📌 Tech Stack: **Java | Vert.x | PostgreSQL | Kafka | Redis | Docker | Kubernetes | AWS**  
+This project contains code implementing a RESTful API for managing user subscriptions.
 
-## 🛠️ My Tech Stack  
-| Language | Frameworks | Databases | Cloud & DevOps | Message Queues |
-|----------|------------|-----------|----------------|----------------|
-| Java, Kotlin | Vert.x, Spring Boot | PostgreSQL, MongoDB | AWS, Docker, K8s | Kafka, RabbitMQ |
+## Stack
+This project is built using Flask(Python web framework), MySQL(database) and SQLAlchemy(Object Relational Mapper).
 
-## 🌟 Featured Projects  
-### 🔹 **1. Real-Time Payment Processing System**  
-- **Tech Stack:** Java, Vert.x, Kafka, PostgreSQL, Redis  
-- **Features:** High concurrency, low latency, idempotency handling  
-- 📂 **[GitHub Repo](https://github.com/yourusername/project1)**  
+## Setup
 
-### 🔹 **2. Scalable Microservices Architecture**  
-- **Tech Stack:** Java, Spring Boot, Kubernetes, gRPC, Prometheus  
-- **Features:** Service discovery, tracing, fault tolerance  
-- 📂 **[GitHub Repo](https://github.com/yourusername/project2)**  
+Setting up this project is simple as it has already been configured using docker and docker-compose(dockerized). All you need is to carry out the following steps accordingly.
 
-## 🔥 Open-Source Contributions  
-- [Contribution to XYZ Library](https://github.com/somerepo)  
-- [Built a custom Vert.x utility](https://github.com/yourrepo)  
+### 1. Clone github repository
+```bash
+git clone https://github.com/el-caminoo/Clue-Insights
+```
+### 2. Build the application
 
-## ✍️ Blogs & Articles  
-- 📜 [Scaling Java Microservices with Vert.x](https://medium.com/@yourusername)  
-- 📜 [Database Indexing Best Practices](https://dev.to/yourusername)  
+Make sure you have docker and docker compose installed on your computer then run
+```bash
+docker compose build
+```
+to build the application components.
 
-## 📫 Connect with Me  
-- 🏢 **LinkedIn:** [linkedin.com/in/yourusername](https://linkedin.com/in/yourusername)  
-- 🐙 **GitHub:** [github.com/yourusername](https://github.com/yourusername)  
-- ✉️ **Email:** your.email@example.com  
+### 3. Run the application
+After successfully building, we can run the containers using the following command
+```bash
+docker compose up
+```
 
----
+## OpenAPI Specification
+The OpenAPI Specification documentation can be found at http://127.0.0.1:8000/doc/
 
-⭐️ **Star my repositories if you find them useful!** 🚀
+## API Endpoints 
+| URL      | Description | Remark  |
+|----------|-------------|---------|
+| http://localhost:8000/user/create | This endpoint creates a staff account with admin role in order to create products(subscription plans on the platform) | No JWT required
+| http://localhost:8000/user/login  | This endpoint logs in a staff account with admin role to obtain a JWT used to create products | No JWT required 
+| http://localhost:8000/customer/create | This endpoint creates a customer that potentially purchases, upgrades or cancels a subscription plan | No JWT required  
+| http://localhost:8000/customer/login | This endpoint logs in a customer in order to obtain a JWT to make customer based request | No JWT required
+| http://localhost:8000/product/create | This endpoint is used by a staff account with an "admin" role to create products(subscription plans) | JWT required
+| http://localhost:8000/product/list | This endpoint returns a list of subscription plans available for purchase | No JWT required
+| http://localhost:8000/subscription/purchase | This endpoint is used by a customer to purchase a subscription plan | JWT required
+| http://localhost:8000/subscription/upgrade | This endpoint is used by a customer to upgrade to a new subscription plan | JWT required
+| http://localhost:8000/subscription/cancel | This endpoint is used to cancel a customer's active subscription plan | JWT required
+| http://localhost:8000/subscription/active/all | Returns all active subscriptions | No JWT required
+| http://localhost:8000/subscription/list | Returns a list of subscriptions in descending order of its start_at column | No JWT required
+| http://localhost:8000/subscription/customer/history | Returns the subscription history of a customer | JWT required
+
+
+## Alternative setup
+The project can also be setup by creating a virtual environment on your computer and installing the project dependencies using the Pip tool.
+
+### 1. Create a python virtual environment
+```bash
+python3 -m venv [name of virtual environment folder]
+```
+This can be done in the base directory of the cloned repository.
+
+### 2. Install project dependencies
+This can be done by running the following command
+```bash
+pip install -r requirements.txt
+```
+in the base directory or where the requirements.txt file is located.
+### 3. Setting up you database
+This project is configured to work with a MySQL databse but can also work with a SQlite DB. Make sure to specify what database you intend to make use of in your .env file.
+
+### 4. Environmental Variables
+Ensure you have the values of the following variables in your .env file for the project to work correctly
+
+* FLASK_APP=[your value]
+* FLASK_ENV=[your value]
+* DATABASE_URL=[your mysql or sqlite db url e.g 'mysql+mysqlconnector://[username]:[password]@localhost/[db-name]']
+* SECRET_KEY=[your value]
+* JWT_SECRET_KEY=[your value]
+
+Everything should work perfectly if all the steps are followed correctly.

@@ -1,12 +1,13 @@
-# from app import db
+from datetime import datetime, timezone
+from config.database import db
 
+class Currency(db.Model):
+    __tablename__ = "currencies"
 
-# class Currency(db.Model):
+    code = db.Column(db.String(3), primary_key=True)
+    name = db.Column(db.String(320), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)
 
-#   __tablename__ = "currencies"
-
-#   id = db.Column(db.Integer, primary_key=True)
-#   name
-#   code = 
-#   created_at
-#   deleted_at
+    def __repr__(self):
+        return f"<Currency {self.code} - {self.code}>"

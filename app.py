@@ -1,38 +1,35 @@
 from flask import Flask
 from config.env import Config
-from config.database import init_db
+from config.database import init_db, db
 from flask_jwt_extended import JWTManager
 from flask_smorest import Api
+from flask_cors import CORS
 from routes.user import user_routes
 from routes.customer import customer_routes
+from routes.product import product_routes
+from routes.subscription import subscription_routes
 
 
 def create_app():
-    """Application factory function to create and configure the Flask app."""
     app = Flask(__name__)
+
+    CORS(app)
 
     # Load configurations
     app.config.from_object(Config)
+
+    api = Api(app)
 
     # Initialize database
     init_db(app)
 
     # Initialize extensions
     JWTManager(app)
-    api = Api(app)
-
-    # OpenAPI Specification
-    api.spec.options["servers"] = [
-        {"url": "http://127.0.0.1:5000", "description": "Local development server"}
-    ]
 
     # Register blueprints
     api.register_blueprint(user_routes, url_prefix="/user")
     api.register_blueprint(customer_routes, url_prefix="/customer")
+    api.register_blueprint(product_routes, url_prefix="/product")
+    api.register_blueprint(subscription_routes, url_prefix="/subscription")
 
     return app
-
-
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True)

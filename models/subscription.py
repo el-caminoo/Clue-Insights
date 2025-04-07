@@ -1,42 +1,44 @@
-# from app import db
+from datetime import datetime, timezone
+from config.database import db
 
 
-# class Subscription(db.Model):
+class Subscription(db.Model):
+    __tablename__ = "subscriptions"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    status = db.Column(db.Enum("inactive", "cancelled", "active", "upgraded", name="subscription_status"),nullable=False, index=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey("customers.id", ondelete="NO ACTION"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id", ondelete="NO ACTION"), nullable=False)
+    starts_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    ends_at = db.Column(db.DateTime, nullable=True, index=True)
+    downgraded_at = db.Column(db.DateTime, nullable=True)
+    downgraded_to_product_id = db.Column(
+        db.Integer, db.ForeignKey("products.id", ondelete="NO ACTION"), nullable=True
+    )
+    upgraded_at = db.Column(db.DateTime, nullable=True)
+    upgraded_to_product_id = db.Column(
+        db.Integer, db.ForeignKey("products.id", ondelete="NO ACTION"), nullable=True
+    )
+    cancelled_at = db.Column(db.DateTime, nullable=True)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    deleted_at = db.Column(db.DateTime, nullable=True, index=True)
+
+    customer = db.relationship("Customer", back_populates="subscriptions", lazy=True)
+    product = db.relationship(
+        "Product", foreign_keys=[product_id], backref="subscriptions", lazy=True
+    )
+    downgraded_to_product = db.relationship(
+        "Product",
+        foreign_keys=[downgraded_to_product_id],
+        backref="downgraded_subscriptions",
+        lazy=True
+    )
+    upgraded_to_product = db.relationship(
+        "Product",
+        foreign_keys=[upgraded_to_product_id],
+        backref="upgraded_subscriptions",
+        lazy=True,
+    )
     
-#   __tablename__ = "subscriptions"
-
-#   id = db.Column(db.Integer, primary_key=True)
-#   status = 
-#   customer_id =
-#   plan_id = 
-#   starts_at =
-#   ends_at =
-
-
-#   CREATE TYPE subscription_status AS ENUM ('inactive', 'active', 'upgraded');
-
-# CREATE TABLE IF NOT EXISTS subscriptions
-# (
-#     id BIGSERIAL PRIMARY KEY,
-#     status subscription_status NOT NULL,
-#     customer_id BIGINT NOT NULL,
-#     plan_id BIGINT NOT NULL,
-#     invoice_id BIGINT NOT NULL,
-#     starts_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#     ends_at timestamp with time zone,
-#     renewed_at timestamp with time zone,
-#     renewed_subscription_id BIGINT,
-#     downgraded_at timestamp with time zone,
-#     downgraded_to_plan_id BIGINT,
-#     upgraded_at timestamp with time zone,
-#     upgraded_to_plan_id BIGINT,
-#     cancelled_at timestamp with time zone,
-#     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-#     deleted_at timestamp with time zone,
-#     CONSTRAINT subscriptions_downgraded_to_plan_id_fkey FOREIGN KEY (downgraded_to_plan_id)
-#         REFERENCES plans (id) MATCH SIMPLE
-#         ON UPDATE NO ACTION
-#         ON DELETE NO ACTION,
-#     CONSTRAINT subscriptions_invoice_id_fkey FOREIGN KEY (invoice_id)
-#         REFERENCES invoices (id) MATCH SIMPLE
-#         ON UPDATE NO ACTION
+    def __repr__(self):
+        return f"<Subscription {self.id} for Customer {self.customer_id}, Status: {self.status}>"

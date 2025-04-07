@@ -1,4 +1,6 @@
 from marshmallow import Schema, fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from models import User
 
 
 class CreateUserSchema(Schema):
@@ -14,3 +16,10 @@ class AuthenticateUserSchema(Schema):
 
     email = fields.String(required=True, description="Email of the user")
     password = fields.String(required=True, load_only=True, description="Password for authentication")
+
+
+class UserSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        exclude = ("id", "password_hash", "created_at", "deleted_at")
