@@ -85,7 +85,12 @@ The project can be started by running the following command
 ```bash
 gunicorn wsgi:app 
 ```
-### 7. Seeding the database
+### 7. Run database migrations
+It is important to run migrations to the database before any testing can begin. This can be done by running the following command
+```bash
+flask db upgrade
+```
+### 8. Seeding the database
 The project contains a seed.py file that inserts requisite data into the database used to effectively carry out testing of the APIs. It is important you run the following command before you begin testing
 ```bash
 python seed.py
