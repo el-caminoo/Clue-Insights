@@ -1,6 +1,30 @@
-version: '3.0'
-
+version: '3.1'
 services:
+  app:
+    image: app/clue-insights:latest
+    container_name: clue-insights
+    build:
+      context: .
+      dockerfile: dockerfile
+      target: app
+    env_file:
+      - dev.env
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    container_name: app-database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: subscription
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
 
 volumes:
   mysql_data:

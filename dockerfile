@@ -18,8 +18,8 @@ COPY . .
 # Expose the port Gunicorn will run on
 EXPOSE 8000
 
-COPY start.sh /start.sh
+COPY start.sh ./
 
-RUN chmod +x /start.sh
+RUN chmod +x *.sh
 
-ENTRYPOINT ["/start.sh"]
+ENTRYPOINT ["./start.sh"]

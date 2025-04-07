@@ -9,3 +9,4 @@ env/
 .idea
 .vscode
 .gitignore
+.pytest_cache
