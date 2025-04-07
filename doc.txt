@@ -79,7 +79,18 @@ The models are made up of the following tables
   - created_at(same as in other models)
   - deleted_at(same as in other models)
 
-  MODEL RELATIONSHIPS
+ENDPOINT SPECIFICATIONS
+
+Some endpoint need JWT tokens in order to process requests successfully
+1. /product/create requires a JWT obtained from a User(staff) login endpoint to successfully process requests.
+2. /subscription/purchase
+   /subscription/upgrade
+   /subscription/cancel
+   /subscription/customer/history
+   all require JWT tokens obtain from the customer login endpoint to process requests successfully.
+
+
+MODEL RELATIONSHIPS
 
   Some important model relationships will be highlighted to help better understand the project design.
   - Currency-Customer: This is a one-to-many relationship(one currency to many customers) seeing as multiple customers may be assigned to
@@ -95,11 +106,11 @@ The models are made up of the following tables
   - Subscription-Product: This is a many-to-one(multiple subscription rows can reference the same product)seeing as multiple customers can be subscribed
                           to the same product.
 
-  QUERY OPTIMIZATION STRATEGY
+QUERY OPTIMIZATION STRATEGY
 
-  The query optimization strategy adopted in order to increase query performance especially for repository functions implemented using raw SQL as 
-  opposed to ORM usage are as follows
-  1. Making use of indexed columns for lookups, checks, conditions and filtering to cut down response time.
-  2. Field selection during implementation instead of the use of * to avoid redundant data return.
-  3. Usage of LIMIT and OFFSET for pagination of results in the event of large dataset handling e.g Retrieving active subscriptions, Listing subscriptions and 
-     retrieving customer subscription history.
+The query optimization strategy adopted in order to increase query performance especially for repository functions implemented using raw SQL as 
+opposed to ORM usage are as follows
+1. Making use of indexed columns for lookups, checks, conditions and filtering to cut down response time.
+2. Field selection during implementation instead of the use of * to avoid redundant data return.
+3. Usage of LIMIT and OFFSET for pagination of results in the event of large dataset handling e.g Retrieving active subscriptions, Listing subscriptions and 
+    retrieving customer subscription history.

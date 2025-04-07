@@ -1,6 +1,6 @@
 from flask import Flask
 from config.env import Config
-from config.database import init_db, db
+from config.database import init_db
 from flask_jwt_extended import JWTManager
 from flask_smorest import Api
 from flask_cors import CORS
