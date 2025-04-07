@@ -23,4 +23,3 @@ class ProductPricing(db.Model):
         return f"<ProductPricing product_id={self.product_id} price={self.price} from={self.from_date} to={self.to_date}>"
 
 
-product = db.relationship("Product", back_populates="prices")

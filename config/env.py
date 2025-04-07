@@ -11,8 +11,8 @@ class Config:
     OPENAPI_VERSION = "3.1.0"
     OPENAPI_URL_PREFIX = "/doc"
     OPENAPI_SWAGGER_UI_PATH = "/"
-    # OPENAPI_SWAGGER_UI_URL = "/static/swagger-ui/dist/"
-    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    # OPENAPI_SWAGGER_UI_URL = "/static/swagger-ui/dist/"  #for offline use
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/" #for online use
 
     SECRET_KEY = os.getenv("SECRET_KEY")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")

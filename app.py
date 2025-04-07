@@ -9,14 +9,15 @@ from routes.customer import customer_routes
 from routes.product import product_routes
 from routes.subscription import subscription_routes
 
-
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
     CORS(app)
 
-    # Load configurations
-    app.config.from_object(Config)
+    if test_config:
+        app.config.update(test_config)
+    else:
+        app.config.from_object(Config)
 
     api = Api(app)
 

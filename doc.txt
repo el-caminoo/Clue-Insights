@@ -114,8 +114,3 @@ opposed to ORM usage are as follows
 2. Field selection during implementation instead of the use of * to avoid redundant data return.
 3. Usage of LIMIT and OFFSET for pagination of results in the event of large dataset handling e.g Retrieving active subscriptions, Listing subscriptions and 
     retrieving customer subscription history.
-
-
-
-
-Provide basic tests for subscription handling and query performance.

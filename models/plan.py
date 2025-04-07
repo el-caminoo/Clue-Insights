@@ -6,7 +6,7 @@ class Plan(db.Model):
     __tablename__ = "plans"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    billing_interval = db.Column(db.Integer, nullable=False, default=1)
+    billing_interval = db.Column(db.Integer, nullable=False)
     created_at = db.Column(
         db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
     )
