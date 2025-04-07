@@ -1,0 +1,45 @@
+Problem 1: Optimized Subscription Management API
+
+Objective: Create a RESTful API using Python (Flask) backed by SQL (SQLite or MySQL/MariaDB) for managing user subscriptions. Your focus should be on optimizing SQL queries for efficiency and scalability.
+
+Requirements:
+
+User Registration and Authentication:
+
+Endpoints for registering new users and authenticating them.
+
+Subscription Plans:
+
+Create and list subscription plans (e.g., Free, Basic, Pro).
+
+User Subscriptions:
+
+Allow users to subscribe, upgrade, and cancel subscriptions.
+
+Optimize queries for retrieving active subscriptions efficiently.
+
+Performance Optimization:
+
+Optimize database queries for listing subscriptions and retrieving subscription history.
+
+Ensure indexes are properly used to speed up lookups.
+
+Analyze slow queries and provide an explanation of your optimizations.
+
+Constraints:
+
+Use SQLAlchemy ORM but override default queries with raw SQL where needed for optimization.
+
+Include clear documentation and comments explaining query optimizations.
+
+Provide basic tests for subscription handling and query performance.
+
+Submission:
+
+Provide your submission via a GitHub repository.
+
+Include setup instructions (Docker or virtual environment).
+
+Include a short document explaining your optimization choices.
+
+

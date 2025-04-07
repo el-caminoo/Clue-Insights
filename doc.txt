@@ -1,45 +1,105 @@
-Problem 1: Optimized Subscription Management API
+INTRODUCTION
 
-Objective: Create a RESTful API using Python (Flask) backed by SQL (SQLite or MySQL/MariaDB) for managing user subscriptions. Your focus should be on optimizing SQL queries for efficiency and scalability.
+This document explains in details some design decisions and specifications during the implementation of the RESTful API subscription service.
 
-Requirements:
+PROJECT STRUCTURE
 
-User Registration and Authentication:
+This project is built using a repository pattern approach so as to isolate individual layers namely Services, Repositories and Routes.
+1. Services: Houses the business logic for all processes and sub_processes(e.g Password hashing)
+2. Repository: This is the database interaction layer. This is where database related operations are carried out.
+3. Routes: This is the HTTP interaction layer. It is where http requests and coonfiguration for specific endpoints can be found(e.g JWT requirements, POST data)
 
-Endpoints for registering new users and authenticating them.
+MODELS
 
-Subscription Plans:
+The models are made up of the following tables
+1. User: This is a person or member of staff of the service/company that offers/sells the products/subscriptions. Every user is assigned a role at creation so RBAC(Role Based Access Control)
+   can be enforced. The model is made up of 6 fields namely:
+   - id(unique identification number), 
+   - email(unique email address attached to the user), 
+   - password_hash(encrypted password), 
+   - role(RBAC level of the user) e.g admin, staff etc, 
+   - created_at(Timestamp of row creation), 
+   - deleted_at(Timestamp of row deletion)
 
-Create and list subscription plans (e.g., Free, Basic, Pro).
+2. Customer: This is a person who signs-up and is looking to purchase subscriptions. The model is made up of the following fields
+  - id(same as in User model)
+  - email(same as in User model)
+  - first_name(firstname of the customer)
+  - last_name(lastname of the customer)
+  - phone(phone number of the customer)
+  - country(country of residence)
+  - currency_code(currency attached to the customer, usually dependent on the country of residence)
+  - password_hash(same as in User model)
+  - created_at(same as in User model)
+  - deleted_at(same as in User model)
 
-User Subscriptions:
+3. Currency: Available currencies that can be attached to a user and products(subscription plans) are sold in.
+  - code(currency code e.g USD, NGN, BTC etc)
+  - name(fullname of the currency e.g United States Dollars)
+  - created_at(same as in User)
+  - deleted_at(same as in User)
 
-Allow users to subscribe, upgrade, and cancel subscriptions.
+4. Plan: This provides information about the billing interval/Cycle or validity period of a product(subscription plan) to its due date/expiration.
+  - id(same as in all models)
+  - billing_interval(Period between when renewal is due/Period of active subscription plan validity)
+  - created_at(same as in all models)
+  - deleted_at(same as in all models)
 
-Optimize queries for retrieving active subscriptions efficiently.
+5. Product Pricing: Provides details about the price of a subscription plan
+  - id(same as in all models)
+  - product_id(referencing the product/subscription plan it defines)
+  - currency(The currency denomination its value is in)
+  - price(numerical value of the subscription plan)
+  - from_date(Timestamp from which the price begins to apply to the product)
+  - to_date(Timestamp at which the price stops applying.)
+  - created_at(same as in all models)
+  - deleted_at(same as in all models)
 
-Performance Optimization:
+6. Product: The Subscription plans to be sold/made available to customers
+  - id(same as in all models)
+  - name(a unique name given to the subsc plan e.g Free, Basic, Premium)
+  - description(extra details about the subscription plan)
+  - price(refrence to a related price object detailing the price of the subscription plan)
+  - plan_id(reference to a related plan detailing the billing interval/validity period of the subscription plan)
+  - created_at(same as in all models)
+  - deleted_at(same as in all models)
 
-Optimize database queries for listing subscriptions and retrieving subscription history.
+7. Subscription: This table contain information about subscriptions purchased, upgraded or cancelled by customers
+  - id(same as in all models)
+  - status(current status of the subscription i.e active, inactive, upgraded, cancelled)
+  - customer_id(id of customer linked with the given subscription)
+  - product_id(id of product linked with the given subscription)
+  - starts_at(Timestamp of the commencement of the validity of a subscription)
+  - ends_at(Timestamp of the expiration of the subscription)
+  - downgraded_at(Timestamp as at the time a downgrade action was carried out on the subscription)
+  - downgraded_to_product_id(id of the subscription the present subscription is being downgraded to)
+  - upgraded_at(Timestamp signifying the time an upgrade action was carried out on the subscription)
+  - upgraded_to_product_id(id of the product the current subscription is being upgraded to)
+  - cancelled_at(Timestamp signifying the time a cancel action was carried out on the subscription)
+  - created_at(same as in other models)
+  - deleted_at(same as in other models)
 
-Ensure indexes are properly used to speed up lookups.
+  MODEL RELATIONSHIPS
 
-Analyze slow queries and provide an explanation of your optimizations.
+  Some important model relationships will be highlighted to help better understand the project design.
+  - Currency-Customer: This is a one-to-many relationship(one currency to many customers) seeing as multiple customers may be assigned to
+                        a single currency
+  - Plan-Product: This is a one-to-many relationship(one plan to many products) seeing as multiple products can have the same billing interval
+                  and validity period.
+  - Price-Product: This is a many-to-one relationship(different prices can be linked to a single product)seeing as at different times, the price 
+                    of a product may change e.g. black friday sales, summer sales, festive sales, holiday prices etc and keeping track of price history
+                            and versioning is important.
+  - Subscription-Customer: This is a many-to-one(many subscription rows may reference the same customer). In the event of a downgrade or upgrade, new subscription
+                            rows are created to keep track of the active subscription and mark the previously active subscription as either upgraded or
+                            downgraded.
+  - Subscription-Product: This is a many-to-one(multiple subscription rows can reference the same product)seeing as multiple customers can be subscribed
+                          to the same product.
 
-Constraints:
+  QUERY OPTIMIZATION STRATEGY
 
-Use SQLAlchemy ORM but override default queries with raw SQL where needed for optimization.
-
-Include clear documentation and comments explaining query optimizations.
-
-Provide basic tests for subscription handling and query performance.
-
-Submission:
-
-Provide your submission via a GitHub repository.
-
-Include setup instructions (Docker or virtual environment).
-
-Include a short document explaining your optimization choices.
-
-
+  The query optimization strategy adopted in order to increase query performance especially for repository functions implemented using raw SQL as 
+  opposed to ORM usage are as follows
+  1. Making use of indexed columns for lookups, checks, conditions and filtering to cut down response time.
+  2. Field selection during implementation instead of the use of * to avoid redundant data return.
+  3. Usage of LIMIT and OFFSET for pagination of results in the event of large dataset handling e.g Retrieving active subscriptions, Listing subscriptions and 
+     retrieving customer subscription history.
