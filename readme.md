@@ -57,17 +57,22 @@ The project can also be setup by creating a virtual environment on your computer
 python3 -m venv [name of virtual environment folder]
 ```
 This can be done in the base directory of the cloned repository.
+### 2. Activated the virtual environment
+This can be done by running the following command
+```bash
+source [virtial environment folder]/bin/activate
+```
 
-### 2. Install project dependencies
+### 3. Install project dependencies
 This can be done by running the following command
 ```bash
 pip install -r requirements.txt
 ```
 in the base directory or where the requirements.txt file is located.
-### 3. Setting up you database
+### 4. Setting up your database
 This project is configured to work with a MySQL databse but can also work with a SQlite DB. Make sure to specify what database you intend to make use of in your .env file.
 
-### 4. Environmental Variables
+### 5. Environmental Variables
 Ensure you have the values of the following variables in your .env file for the project to work correctly
 
 * FLASK_APP=[your value]
@@ -75,5 +80,10 @@ Ensure you have the values of the following variables in your .env file for the 
 * DATABASE_URL=[your mysql or sqlite db url e.g 'mysql+mysqlconnector://[username]:[password]@localhost/[db-name]']
 * SECRET_KEY=[your value]
 * JWT_SECRET_KEY=[your value]
+### 6. Running the project
+The project can be started by running the following command
+```bash
+gunicorn wsgi:app 
+```
 
 Everything should work perfectly if all the steps are followed correctly.
