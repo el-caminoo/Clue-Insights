@@ -24,7 +24,7 @@ class CreateUser(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Registration failed",
             ),
@@ -44,7 +44,7 @@ class AuthenticateUser(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Login failed",
             ),
