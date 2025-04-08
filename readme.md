@@ -91,7 +91,7 @@ It is important to run migrations to the database before any manual testing can 
 flask db upgrade
 ```
 ### 8. Seeding the database
-The project contains a seed.py file that inserts requisite data into the database used to effectively carry out testing of the APIs. It is important you run the following command before you begin testing
+The project contains a seed.py file that inserts requisite data into the database used to effectively carry out manual testing of the APIs. It is important you run the following command before you begin manual testing.
 ```bash
 python seed.py
 ```
