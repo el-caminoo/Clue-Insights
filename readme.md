@@ -86,7 +86,7 @@ The project can be started by running the following command
 gunicorn wsgi:app 
 ```
 ### 7. Run database migrations
-It is important to run migrations to the database before any testing can begin. This can be done by running the following command
+It is important to run migrations to the database before any manual testing can begin. This can be done by running the following command
 ```bash
 flask db upgrade
 ```
