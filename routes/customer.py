@@ -23,7 +23,7 @@ class CreateCustomer(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Registration failed",
             ),
@@ -35,7 +35,7 @@ class AuthenticateCustomer(MethodView):
     @customer_routes.arguments(AuthenticateCustomerSchema)
     @customer_routes.response(200, ResponseSchema)
     def post(self, data: dict) -> dict:
-        """Authenticates an existing customer to the platform asynchronously."""
+        """Authenticates an existing customer to the platform."""
         email, password = data["email"], data["password"]
 
         response_data, status = CustomerService.authenticate_customer(
@@ -45,7 +45,7 @@ class AuthenticateCustomer(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Login failed",
             ),
