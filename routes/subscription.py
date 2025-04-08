@@ -25,7 +25,7 @@ class PurchaseSubscription(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Purchase failed",
             ),
@@ -64,7 +64,7 @@ class CancelSubscription(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Failed to cancel subscription",
             ),
@@ -80,7 +80,7 @@ class RetrieveAllActiveSubscriptions(MethodView):
 
         return (create_api_response(
             response_data["message"],
-            response_data["data"] if response_data["success"] else None,
+            response_data["data"],
             status,
             None if response_data["success"] else "Unable to fetch active subscriptions",
         ), status
@@ -96,7 +96,7 @@ class ListSubscriptions(MethodView):
         return(
             create_api_response(
                 response_data["message"], 
-                response_data["data"] if response_data["success"] else None, 
+                response_data["data"], 
                 status, 
                 None if response_data["success"] else "Unable to fetch subscriptions"
             ), status
@@ -114,7 +114,7 @@ class RetrieveSubscriptionHistory(MethodView):
         return(
             create_api_response(
                 response_data["message"],
-                response_data["data"] if response_data["success"] else None,
+                response_data["data"],
                 status,
                 None if response_data["success"] else "Unable to get subscription history"
             ), status
