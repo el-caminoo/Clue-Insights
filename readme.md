@@ -70,7 +70,7 @@ pip install -r requirements.txt
 ```
 in the base directory or where the requirements.txt file is located.
 ### 4. Setting up your database
-This project is configured to work with a MySQL databse but can also work with a SQlite DB. Make sure to specify what database you intend to make use of in your .env file.
+This project is configured to work with a MySQL database but can also work with a SQlite DB. Make sure to specify what database you intend to make use of in your .env file.
 
 ### 5. Environmental Variables
 Ensure you have the values of the following variables in your .env file for the project to work correctly
