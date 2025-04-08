@@ -25,9 +25,10 @@ class CreateSubscriptionPlan(MethodView):
       return (
         create_api_response(
           response_data["message"],
-          response_data.get("data") if response_data["success"] else None,
+          response_data["data"],
           status,
-          (None if response_data["success"] else "Failed to create subscription plan")), status
+          None if response_data["success"] else "Failed to create subscription plan"), 
+          status
         )
 
 @product_routes.route("/list")
@@ -40,13 +41,9 @@ class ListSubscriptionPlans(MethodView):
         return (
             create_api_response(
                 response_data["message"],
-                response_data.get("data") if response_data["success"] else None,
+                response_data["data"],
                 status,
-                (
-                    None
-                    if response_data["success"]
-                    else "Unable to fetch subscription plans"
-                ),
+                None if response_data["success"] else "Unable to fetch subscription plans"
             ),
             status,
         )
