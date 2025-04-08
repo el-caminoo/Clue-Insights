@@ -118,7 +118,7 @@ def test_get_active_subscriptions(session, test_customer, test_product):
         )
 
     start_time = time.perf_counter()
-    response = SubscriptionRepository.get_active_subscriptions()
+    response = SubscriptionRepository.get_active_subscriptions(10, 0)
     end_time = time.perf_counter()
     duration = end_time - start_time
 
@@ -141,7 +141,7 @@ def test_list_subscriptions(session, test_customer, test_product):
         )
 
     start_time = time.perf_counter()
-    response = SubscriptionRepository.list_subscriptions()
+    response = SubscriptionRepository.list_subscriptions(10, 0)
     end_time = time.perf_counter()
     duration = end_time - start_time
 
@@ -162,7 +162,7 @@ def test_retrieve_customer_subscription_history(session, test_customer, test_pro
 
     start_time = time.perf_counter()
     response = SubscriptionRepository.retrieve_customer_subscription_history(
-        test_customer.id
+        test_customer.id, 10, 0
     )
     end_time = time.perf_counter()
     duration = end_time - start_time
