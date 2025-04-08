@@ -26,3 +26,11 @@ def format_response(message: str, data: Any = None, success: bool = True, status
         "data": data if success else None,
         "success": success,
     }, status
+
+def paginate(page: int = 1, page_size: int = 10):
+    """
+    Calculates offset and limit for SQL pagination.
+    """
+    page = max(page, 1)
+    offset = (page - 1) * page_size
+    return page_size, offset

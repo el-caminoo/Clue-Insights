@@ -1,7 +1,8 @@
+from flask import request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_smorest import Blueprint
-from utils import create_api_response
+from utils import create_api_response, paginate
 from schemas import ResponseSchema, UpgradeSubscriptionSchema, PurchaseSubscriptionSchema, SubscriptionQuerySchema
 from services import SubscriptionService
 
@@ -73,10 +74,17 @@ class CancelSubscription(MethodView):
 
 @subscription_routes.route("/active/all")
 class RetrieveAllActiveSubscriptions(MethodView):
+    @subscription_routes.arguments(SubscriptionQuerySchema, location="query")
     @subscription_routes.response(201, ResponseSchema)
-    def get(self) -> dict:
+    def get(self, query_args: dict) -> dict:
         """Returns a list of all active subscriptions."""
-        response_data, status = SubscriptionService.get_active_subscriptions()
+
+        page = query_args["page"]
+        page_size = query_args["page_size"]
+
+        limit, offset = paginate(page, page_size)
+
+        response_data, status = SubscriptionService.get_active_subscriptions(limit, offset)
 
         return (create_api_response(
             response_data["message"],
@@ -88,10 +96,17 @@ class RetrieveAllActiveSubscriptions(MethodView):
 
 @subscription_routes.route("/list")
 class ListSubscriptions(MethodView):
+    @subscription_routes.arguments(SubscriptionQuerySchema, location="query")
     @subscription_routes.response(200, ResponseSchema)
-    def get(self) -> dict:
+    def get(self, query_args: dict) -> dict:
         """Lists subscriptions."""
-        response_data, status = SubscriptionService.list_subscriptions()
+
+        page = query_args["page"]
+        page_size = query_args["page_size"]
+
+        limit, offset = paginate(page, page_size)
+
+        response_data, status = SubscriptionService.list_subscriptions(limit, offset)
 
         return(
             create_api_response(
@@ -104,12 +119,20 @@ class ListSubscriptions(MethodView):
 
 @subscription_routes.route("/customer/history")
 class RetrieveSubscriptionHistory(MethodView):
+    @subscription_routes.arguments(SubscriptionQuerySchema, location="query")
     @subscription_routes.response(200, ResponseSchema)
     @jwt_required()
-    def get(self) -> dict:
+    def get(self, query_args: dict) -> dict:
         """Retrieves customer's subscription history."""
+
         customer_id = get_jwt_identity()
-        response_data, status = SubscriptionService.retrieve_customer_subscription_history(customer_id)
+
+        page = query_args["page"]
+        page_size = query_args["page_size"]
+
+        limit, offset = paginate(page, page_size)
+
+        response_data, status = SubscriptionService.retrieve_customer_subscription_history(customer_id, limit, offset)
 
         return(
             create_api_response(
@@ -119,4 +142,3 @@ class RetrieveSubscriptionHistory(MethodView):
                 None if response_data["success"] else "Unable to get subscription history"
             ), status
         )
-

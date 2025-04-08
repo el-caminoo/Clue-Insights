@@ -33,28 +33,28 @@ class SubscriptionService:
       )
 
   @staticmethod
-  def get_active_subscriptions() -> Tuple[Dict[str, Any], int]:
+  def get_active_subscriptions(limit, offset) -> Tuple[Dict[str, Any], int]:
       """Retrieves all active subscriptions."""
-      subscriptions = SubscriptionRepository.get_active_subscriptions()
+      subscriptions = SubscriptionRepository.get_active_subscriptions(limit, offset)
       serialized = SubscriptionSchema(many=True).dump(subscriptions)
       return format_response(
           "Successfully retrieved active subscriptions", serialized
       )
 
   @staticmethod
-  def list_subscriptions() -> Tuple[Dict[str, Any], int]:
+  def list_subscriptions(limit, offset) -> Tuple[Dict[str, Any], int]:
       """Returns all subscriptions."""
-      subscriptions = SubscriptionRepository.list_subscriptions()
+      subscriptions = SubscriptionRepository.list_subscriptions(limit, offset)
       serialized = SubscriptionSchema(many=True).dump(subscriptions)
       return format_response(
           "Successfully retrieved subscriptions", serialized
       )
 
   @staticmethod
-  def retrieve_customer_subscription_history(customer_id: int) -> Tuple[Dict[str, Any], int]:
+  def retrieve_customer_subscription_history(customer_id: int, limit, offset) -> Tuple[Dict[str, Any], int]:
       """Retrieves a customer's subscription history (sorted)."""
       subscriptions = SubscriptionRepository.retrieve_customer_subscription_history(
-          customer_id
+          customer_id, limit, offset
       )
       serialized = SubscriptionSchema(many=True).dump(subscriptions)
       return format_response(

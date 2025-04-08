@@ -99,7 +99,7 @@ class SubscriptionRepository:
         return current
 
     @staticmethod
-    def get_active_subscriptions(limit=10, offset=0):
+    def get_active_subscriptions(limit, offset):
         # Query optimization is beibg carried out by the use of indexed fields for quick look-ups and conditionals
         # Pagination being carried out as well with the LIMIT and OFFSET keywords
         # Specifying just the id column to be returned to prevent redundant data return.
@@ -134,7 +134,7 @@ class SubscriptionRepository:
         return subscriptions
 
     @staticmethod
-    def list_subscriptions(limit=10, offset=0):
+    def list_subscriptions(limit, offset):
         # Query optimization is beibg carried out by the use of indexed fields for quick look-ups and conditionals
         # Pagination being carried out as well with the LIMIT and OFFSET keywords
         # Specifying just the id column to be returned to prevent redundant data return.
@@ -164,7 +164,7 @@ class SubscriptionRepository:
         return subscriptions
 
     @staticmethod
-    def retrieve_customer_subscription_history(customer_id, limit=10, offset=0):
+    def retrieve_customer_subscription_history(customer_id, limit, offset):
         # Query optimization is beibg carried out by the use of indexed fields for quick look-ups and conditionals
         # Pagination being carried out as well with the LIMIT and OFFSET keywords
         # Specifying just the id column to be returned to prevent redundant data return.

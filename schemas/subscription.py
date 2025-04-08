@@ -1,13 +1,12 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Subscription, Customer
 from .product import ProductSubscriptionSchema
 
 class SubscriptionQuerySchema(Schema):
-    status = fields.String(required=False)
-    start_date = fields.Date(required=False)
-    end_date = fields.Date(required=False)
-
+    page = fields.Int(missing=1, validate=validate.Range(min=1), description="Page number")
+    page_size = fields.Int(missing=10, validate=validate.Range(min=1, max=100), description="Number of items per page")
+    
 class PurchaseSubscriptionSchema(Schema):
     """Schema for purchasing a new subscription"""
 
