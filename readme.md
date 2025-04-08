@@ -98,3 +98,10 @@ python seed.py
 The folder also contains a doc.txt file that contains details and explainations about the project.
 
 Everything should work perfectly if all the steps are followed correctly.
+
+## Testing
+
+In order to run unit tests, run the following command from the root directory of the project
+```bash
+pytest
+```

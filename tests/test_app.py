@@ -6,12 +6,6 @@ from models import Subscription, Customer, Product, ProductPricing, Plan
 from repositories import SubscriptionRepository
 from app import create_app
 
-
-# -------------------------
-# Fixtures
-# -------------------------
-
-
 @pytest.fixture(scope="function")
 def test_app():
     test_config = {
@@ -115,38 +109,72 @@ def test_cancel_subscription(session, test_customer, test_product):
     ), "Subscription should still be active after cancellation"
 
 
-def test_retrieve_customer_subscription_history(session, test_customer, test_product):
-    # Ensure a subscription exists
-    SubscriptionRepository.purchase_subscription(
-        test_customer.id,
-        {"product_id": test_product.id, "validity_period": 30, "price": 100},
-    )
-
-    history = SubscriptionRepository.retrieve_customer_subscription_history(
-        test_customer.id
-    )
-
-    assert isinstance(history, list), "History should be a list"
-    assert len(history) > 0, "History should contain at least one subscription"
-    assert all(
-        sub.customer_id == test_customer.id for sub in history
-    ), "All subscriptions should belong to the customer"
-
-
-def test_subscription_history_query_performance(session, test_customer, test_product):
-    # Create a few subscriptions to simulate real data
-    for _ in range(5):
+def test_get_active_subscriptions(session, test_customer, test_product):
+    # Create a 12 new subscriptions to simulate real data
+    for _ in range(12):
         SubscriptionRepository.purchase_subscription(
             test_customer.id,
             {"product_id": test_product.id, "validity_period": 30, "price": 100},
         )
 
     start_time = time.perf_counter()
-    history = SubscriptionRepository.retrieve_customer_subscription_history(
+    response = SubscriptionRepository.get_active_subscriptions()
+    end_time = time.perf_counter()
+    duration = end_time - start_time
+
+    assert isinstance(response, list), " Response should be a list"
+    assert len(response) > 0, "Response should contain at least one subscription"
+    assert all(
+        sub.status == "active" for sub in response
+    ), "All subscriptions should have the status == active"
+
+    assert len(response) == 10, "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+
+    assert duration < 0.1, "Query should run to completion in less than a second"
+
+def test_list_subscriptions(session, test_customer, test_product):
+    # Create a 12 new subscriptions to simulate real data
+    for _ in range(12):
+        SubscriptionRepository.purchase_subscription(
+            test_customer.id,
+            {"product_id": test_product.id, "validity_period": 30, "price": 100},
+        )
+
+    start_time = time.perf_counter()
+    response = SubscriptionRepository.list_subscriptions()
+    end_time = time.perf_counter()
+    duration = end_time - start_time
+
+    assert isinstance(response, list), " Response should be a list"
+    assert len(response) > 0, "Response should contain at least one subscription"
+    assert (
+        len(response) == 10
+    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+    assert duration < 0.1, "Query should run to completion in less than a second"
+
+def test_retrieve_customer_subscription_history(session, test_customer, test_product):
+    # Create a 12 new subscriptions to simulate real data
+    for _ in range(12):
+        SubscriptionRepository.purchase_subscription(
+            test_customer.id,
+            {"product_id": test_product.id, "validity_period": 30, "price": 100},
+        )
+
+    start_time = time.perf_counter()
+    response = SubscriptionRepository.retrieve_customer_subscription_history(
         test_customer.id
     )
     end_time = time.perf_counter()
     duration = end_time - start_time
 
-    assert duration < 0.1, f"Query took too long: {duration:.4f} seconds"
-    assert isinstance(history, list), "Result should be a list"
+    assert isinstance(response, list), "Response should be a list"
+    assert len(response) > 0, " should contain at least one subscription"
+    assert all(
+        sub.customer_id == test_customer.id for sub in response
+    ), "All subscriptions should belong to the customer"
+
+    assert (
+        len(response) == 10
+    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+
+    assert duration < 0.1, "Query should run to completion in less than a second"
