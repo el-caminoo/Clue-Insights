@@ -128,7 +128,7 @@ def test_get_active_subscriptions(session, test_customer, test_product):
         sub.status == "active" for sub in response
     ), "All subscriptions should have the status == active"
 
-    assert len(response) == 10, "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+    assert len(response) == 10, "Response should contain exactly 10 suscriptions due to the LIMIT parameter default value being 10 in the query"
 
     assert duration < 0.1, "Query should run to completion in less than a second"
 
@@ -149,7 +149,7 @@ def test_list_subscriptions(session, test_customer, test_product):
     assert len(response) > 0, "Response should contain at least one subscription"
     assert (
         len(response) == 10
-    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter default value being 10 in the query"
     assert duration < 0.1, "Query should run to completion in less than a second"
 
 def test_retrieve_customer_subscription_history(session, test_customer, test_product):
@@ -175,6 +175,6 @@ def test_retrieve_customer_subscription_history(session, test_customer, test_pro
 
     assert (
         len(response) == 10
-    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter in the query"
+    ), "Response should contain exactly 10 suscriptions due to the LIMIT parameter default value being 10 in the query"
 
     assert duration < 0.1, "Query should run to completion in less than a second"
