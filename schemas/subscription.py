@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from models import Subscription, Customer
-from .product import ProductSubscriptionSchema
+from .product import ProductSchema
 
 class SubscriptionQuerySchema(Schema):
     page = fields.Int(missing=1, validate=validate.Range(min=1), description="Page number")
@@ -35,6 +35,6 @@ class SubscriptionSchema(SQLAlchemyAutoSchema):
         exclude = ("customer_id", "created_at", "deleted_at")
     
     customer = fields.Nested(CustomerSchema)
-    product = fields.Nested(ProductSubscriptionSchema)
-    downgraded_to_product = fields.Nested(ProductSubscriptionSchema)
-    upgraded_to_product = fields.Nested(ProductSubscriptionSchema)
+    product = fields.Nested(ProductSchema)
+    downgraded_to_product = fields.Nested(ProductSchema)
+    upgraded_to_product = fields.Nested(ProductSchema)

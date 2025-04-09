@@ -110,7 +110,7 @@ def test_cancel_subscription(session, test_customer, test_product):
 
 
 def test_get_active_subscriptions(session, test_customer, test_product):
-    # Create a 12 new subscriptions to simulate real data
+    # Create 12 new subscriptions to simulate real data
     for _ in range(12):
         SubscriptionRepository.purchase_subscription(
             test_customer.id,
@@ -133,7 +133,7 @@ def test_get_active_subscriptions(session, test_customer, test_product):
     assert duration < 0.1, "Query should run to completion in less than a second"
 
 def test_list_subscriptions(session, test_customer, test_product):
-    # Create a 12 new subscriptions to simulate real data
+    # Create 12 new subscriptions to simulate real data
     for _ in range(12):
         SubscriptionRepository.purchase_subscription(
             test_customer.id,
@@ -153,7 +153,7 @@ def test_list_subscriptions(session, test_customer, test_product):
     assert duration < 0.1, "Query should run to completion in less than a second"
 
 def test_retrieve_customer_subscription_history(session, test_customer, test_product):
-    # Create a 12 new subscriptions to simulate real data
+    # Create 12 new subscriptions to simulate real data
     for _ in range(12):
         SubscriptionRepository.purchase_subscription(
             test_customer.id,

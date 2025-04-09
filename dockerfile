@@ -1,6 +1,8 @@
 # Use a lightweight official Python image
 FROM python:3.14-rc-alpine3.21
 
+RUN apk add --no-cache bash
+
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -18,8 +20,9 @@ COPY . .
 # Expose the port Gunicorn will run on
 EXPOSE 8000
 
-COPY start.sh ./
+COPY ./start.sh .
+COPY ./wait-for-it.sh .
 
 RUN chmod +x *.sh
 
-ENTRYPOINT ["./start.sh"]
+CMD ["./start.sh"]
