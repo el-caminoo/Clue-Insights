@@ -1,7 +1,8 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from utils import create_api_response
-from schemas import ResponseSchema, CreateUserSchema, AuthenticateUserSchema
+from schemas.response import ResponseSchema 
+from schemas.user import CreateUserSchema, AuthenticateUserSchema
 from services import UserService
 
 user_routes = Blueprint(

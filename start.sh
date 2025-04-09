@@ -1,8 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 # Exit immediately if a command exits with a non-zero status
 set -e
-
 
 ./wait-for-it.sh db:3306 -- echo "DB is up"
 

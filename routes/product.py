@@ -3,7 +3,8 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from utils import create_api_response
 from decorators import admin_required
-from schemas import ResponseSchema, CreateProductSchema
+from schemas.response import ResponseSchema
+from schemas.product import CreateProductSchema
 from services import ProductService
 
 product_routes = Blueprint(

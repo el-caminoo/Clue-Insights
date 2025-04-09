@@ -1,7 +1,8 @@
 from marshmallow import Schema, fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from models import Subscription, Customer
+from models import Subscription
 from .product import ProductSchema
+from .customer import CustomerSchema
 
 class SubscriptionQuerySchema(Schema):
     page = fields.Int(missing=1, validate=validate.Range(min=1), description="Page number")
@@ -20,13 +21,6 @@ class UpgradeSubscriptionSchema(Schema):
     product_id = fields.Int(required=True, description="ID of the product to upgrade to.")
     price = fields.Float(required=True, description="Price of the product")
     validity_period = fields.Int(required=True, description="Subscription validity period")
-
-class CustomerSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Customer
-        load_instance = True
-        exclude = ("id", "password_hash", "created_at", "deleted_at")
-
 
 class SubscriptionSchema(SQLAlchemyAutoSchema):
     class Meta:

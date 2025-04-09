@@ -4,7 +4,8 @@ from config.database import db
 class Currency(db.Model):
     __tablename__ = "currencies"
 
-    code = db.Column(db.String(3), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, index=True)
+    code = db.Column(db.String(3), unique=True)
     name = db.Column(db.String(320), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
     deleted_at = db.Column(db.DateTime(timezone=True), nullable=True)

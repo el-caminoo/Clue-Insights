@@ -3,7 +3,8 @@ from flask.views import MethodView
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_smorest import Blueprint
 from utils import create_api_response, paginate
-from schemas import ResponseSchema, UpgradeSubscriptionSchema, PurchaseSubscriptionSchema, SubscriptionQuerySchema
+from schemas.response import ResponseSchema
+from schemas.subscription import UpgradeSubscriptionSchema, PurchaseSubscriptionSchema, SubscriptionQuerySchema
 from services import SubscriptionService
 
 subscription_routes = Blueprint(

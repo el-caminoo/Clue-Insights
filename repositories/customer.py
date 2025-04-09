@@ -5,7 +5,7 @@ from config.database import db
 
 class CustomerRepository:
     @staticmethod
-    def create_customer(email, first_name, last_name, phone, country, password_hash, currency="USD"):
+    def create_customer(email, first_name, last_name, phone, country, password_hash, currency_id=1):
         """Insert a new customer into the database"""
         customer = Customer(
             email=email,
@@ -14,7 +14,7 @@ class CustomerRepository:
             phone=phone,
             country=country,
             password_hash=password_hash,
-            currency_code=currency,
+            currency_id=currency_id,
             created_at=datetime.now(timezone.utc)
         )
         db.session.add(customer)

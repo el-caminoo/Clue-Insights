@@ -44,13 +44,12 @@ def test_customer(session):
         phone="911",
         country="Nigeria",
         password_hash="$2b$12$vk1pq7jpPkDOQ/9//mIKsuwzDP60xlOLTIrOWypJwZlEN97Sfpg1O",
-        currency_code="USD",
+        currency_id=1,
         created_at=datetime.now(timezone.utc),
     )
     session.add(customer)
     session.commit()
     return customer
-
 
 @pytest.fixture
 def test_plan(session):
@@ -67,8 +66,8 @@ def test_product(session, test_plan):
         description="Just a basic plan",
         price=[
             ProductPricing(
-                price=100,
-                currency="USD",
+                amount=100,
+                currency_id=1,
                 from_date=datetime.now().date(),
                 to_date=datetime.now().date(),
                 created_at=datetime.now(timezone.utc),

@@ -8,10 +8,10 @@ class ProductPricing(db.Model):
     product_id = db.Column(
         db.Integer, db.ForeignKey("products.id"), nullable=False
     )
-    currency = db.Column(db.String(3), db.ForeignKey("currencies.code", ondelete="RESTRICT"),
+    currency_id = db.Column(db.Integer, db.ForeignKey("currencies.id", ondelete="RESTRICT"),
         nullable=False,
     )
-    price = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
     from_date = db.Column(db.Date, nullable=False)
     to_date = db.Column(db.Date, nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)

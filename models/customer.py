@@ -10,9 +10,9 @@ class Customer(db.Model):
     last_name = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), unique=True, nullable=False)
     country = db.Column(db.String(120), nullable=False)
-    currency_code = db.Column(
-        db.String(3),
-        db.ForeignKey("currencies.code", ondelete="RESTRICT"),
+    currency_id = db.Column(
+        db.Integer,
+        db.ForeignKey("currencies.id", ondelete="RESTRICT"),
         nullable=False,
     )
     password_hash = db.Column(db.String(256), nullable=False)

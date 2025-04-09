@@ -4,15 +4,15 @@ from config.database import db
 
 class ProductRepository:
     @staticmethod
-    def create_new_subscription(data: dict, currency="USD", plan_id=1, created_at=datetime.now(timezone.utc)):
+    def create_new_subscription(data: dict, currency_id=1, plan_id=1, created_at=datetime.now(timezone.utc)):
         """Insert a new product(subscription plan) into the database"""
         product = Product(
             name=data["name"],
             description=data["description"],
             price=[
                 ProductPricing(
-                    price=data["price"],
-                    currency=currency,
+                    amount=data["amount"],
+                    currency_id=currency_id,
                     from_date=data["from_date"],
                     to_date=data["to_date"],
                     created_at=created_at

@@ -28,12 +28,13 @@ The models are made up of the following tables
   - last_name(lastname of the customer)
   - phone(phone number of the customer)
   - country(country of residence)
-  - currency_code(currency attached to the customer, usually dependent on the country of residence)
+  - currency_id(ID of the currency attached to the customer, usually dependent on the country of residence)
   - password_hash(same as in User model)
   - created_at(same as in User model)
   - deleted_at(same as in User model)
 
 3. Currency: Available currencies that can be attached to a user and products(subscription plans) are sold in.
+  - id(same as in all models)
   - code(currency code e.g USD, NGN, BTC etc)
   - name(fullname of the currency e.g United States Dollars)
   - created_at(same as in User)
@@ -48,8 +49,8 @@ The models are made up of the following tables
 5. Product Pricing: Provides details about the price of a subscription plan
   - id(same as in all models)
   - product_id(referencing the product/subscription plan it defines)
-  - currency(The currency denomination its value is in)
-  - price(numerical value of the subscription plan)
+  - currency_id(ID of the currency denomination its value is in)
+  - amount(numerical value of the subscription plan)
   - from_date(Timestamp from which the price begins to apply to the product)
   - to_date(Timestamp at which the price stops applying.)
   - created_at(same as in all models)

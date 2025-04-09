@@ -10,7 +10,7 @@ class CreateProductSchema(Schema):
 
     name = fields.String(required=True, description="Name of the product(subscription)")
     description = fields.String(required=True, description="Description of the product(subscription)")
-    price = fields.Integer(required=True, description="Price of the subscription")
+    amount = fields.Integer(required=True, description="Price of the subscription")
     from_date = fields.Date(required=True, description="The date the price starts applying")
     to_date = fields.Date(required=True, description="The date the price stops applying")
 
